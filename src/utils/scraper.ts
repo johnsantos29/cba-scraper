@@ -26,9 +26,9 @@ const main = async (address: string) => {
     }
 
     // TODO - remove timeout in prod
-    // await page.waitForTimeout(10000);
+    await page.waitForTimeout(10000);
 
-    // await browser.close();
+    await browser.close();
 };
 
-main("asdsadsad");
+main("1 Vaughan Avenue, Revesby NSW 2212");
