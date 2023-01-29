@@ -1,6 +1,5 @@
 import { chromium, Browser, Page } from "playwright";
 import { CBA_CONSTANTS, CBA_DOM_CONSTANTS } from "../constants";
-import { SCRAPER_RESPONSES } from "../custom-responses";
 
 const main = async (address: string) => {
     const browser: Browser = await chromium.launch({
@@ -17,13 +16,14 @@ const main = async (address: string) => {
 
     await page.waitForLoadState("domcontentloaded");
 
-    try {
-        // get the first option in the suggestions
-        await page.getByRole("option").nth(0).click();
-    } catch (err) {
-        console.log(SCRAPER_RESPONSES.ERROR_ADDRESS_SUGGESTION(address));
-        console.log((err as Error).message);
-    }
+    // get the first option in the suggestions
+    await page.getByRole("option").nth(0).click();
+
+    // get the valuation div
+    const valuation = await (
+        await page.waitForSelector(".estimated-value")
+    ).textContent();
+    console.log(`Valuation for the given address = ${valuation}`);
 
     // TODO - remove timeout in prod
     await page.waitForTimeout(10000);
